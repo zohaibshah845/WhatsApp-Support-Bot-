@@ -1,0 +1,14 @@
+Flask==3.0.0
+Flask-Cors==4.0.0
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-openai>=0.1.0
+langchain-chroma>=0.1.4
+chromadb>=0.5.0
+python-dotenv>=1.0.0
+pypdf>=4.0.0
+python-docx>=1.1.0
+twilio>=9.0.0
+requests>=2.31.0
+python-multipart>=0.0.6
+
