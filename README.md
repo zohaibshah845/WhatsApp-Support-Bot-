@@ -22,6 +22,7 @@ Project structure
 
 whatsapp-support-bot/
 │
+
 ├── app.py                  
 ├── config.py              
 ├── database.py           
