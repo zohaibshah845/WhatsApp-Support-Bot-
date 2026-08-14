@@ -17,7 +17,9 @@ Tech stack
 . File parsing: PyPDF2, pdfplumber, python-docx
 . Configuration: Python-dotenv
 . HTTP Requests: Requests
+
 Project structure
+
 whatsapp-support-bot/
 │
 ├── app.py                  
