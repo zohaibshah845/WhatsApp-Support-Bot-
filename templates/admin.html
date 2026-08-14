@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - WhatsApp Support Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .file-label {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        .file-label:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        
+        .upload-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #45a049;
+            transform: scale(1.02);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-box {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Admin Panel</h1>
+        <p class="subtitle">WhatsApp Support Bot - Document Upload</p>
+        
+        <div class="upload-area">
+            <div class="upload-icon">📄</div>
+            <h3>Naya Document Upload Karo</h3>
+            <p style="color: #666; margin: 10px 0;">
+                PDF, TXT, ya DOCX file upload karo<br>
+                Bot is se answers seekhega
+            </p>
+            
+            <label for="file" class="file-label">📁 File Choose Karo</label>
+            <input type="file" id="file" accept=".pdf,.txt,.docx">
+            
+            <div id="fileName" style="margin: 10px 0; color: #333;"></div>
+            
+            <input type="password" 
+                   class="password-input" 
+                   id="password" 
+                   placeholder="Admin Password">
+            
+            <button class="upload-btn" onclick="uploadDocument()">
+                🚀 Upload & Process
+            </button>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="info-box">
+            <strong>📌 Instructions:</strong><br>
+            • File mein FAQ format use karo<br>
+            • Har sawal aur jawab clearly likho<br>
+            • Urdu aur English dono languages support hain<br>
+            • Max file size: 16MB
+        </div>
+    </div>
+    
+    <script>
+        // File select hone par naam show karo
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('fileName').textContent = '📎 ' + fileName;
+        });
+        
+        async function uploadDocument() {
+            const fileInput = document.getElementById('file');
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            
+            // Check karo file select hui hai
+            if (!fileInput.files[0]) {
+                showMessage('Pehle file select karo!', 'error');
+                return;
+            }
+            
+            // Check karo password bhara hai
+            if (!passwordInput.value) {
+                showMessage('Password enter karo!', 'error');
+                return;
+            }
+            
+            // Form data create karo
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('password', passwordInput.value);
+            
+            try {
+                showMessage('⏳ Document process ho raha hai...', 'info');
+                
+                const response = await fetch('/admin/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage(result.message || '✅ Document upload ho gaya!', 'success');
+                    // Input clear karo
+                    fileInput.value = '';
+                    document.getElementById('fileName').textContent = '';
+                    passwordInput.value = '';
+                } else {
+                    showMessage(result.error || '❌ Kuch error aa gaya!', 'error');
+                }
+            } catch (error) {
+                showMessage('❌ Network error: ' + error.message, 'error');
+            }
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            // 5 second baad message hide karo
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

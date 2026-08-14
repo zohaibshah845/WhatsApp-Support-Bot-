@@ -1,0 +1,230 @@
+[
+  {
+    "question": "hi",
+    "answer": "Assalamualaikum! 👋 Main Malik Trading Company ka Assistant hun. Mobile, Laptop ya Delivery ke baray me poochiye?"
+  },
+  {
+    "question": "hello",
+    "answer": "Walaikum Salam! Malik Trading me khush amadeed. Bataiye aap ko kis product me interest hai?"
+  },
+  {
+    "question": "Company ka naam kya hai",
+    "answer": "Hamari company ka naam Malik Trading Company hai."
+  },
+  {
+    "question": "Business type kya hai",
+    "answer": "Hum Online Shopping aur Delivery Service dete hain."
+  },
+  {
+    "question": "Location kahan hai",
+    "answer": "Hum Karachi, Pakistan me hain. Address: Shop #45, Main Market, Karachi."
+  },
+  {
+    "question": "Working hours kya hain",
+    "answer": "Hamare working hours Monday se Saturday, 9 AM se 6 PM hain. Sunday closed hai."
+  },
+  {
+    "question": "Products kya hain",
+    "answer": "Hamare paas ye products hain:\n1. Mobile phones - Samsung, iPhone, Xiaomi\n2. Laptops - HP, Dell, Lenovo\n3. Accessories - chargers, cases, headphones\n4. Smart watches"
+  },
+  {
+    "question": "Delivery kitne din mein hogi",
+    "answer": "Aapka order 2-3 working days mein deliver ho jayega."
+  },
+  {
+    "question": "Delivery charges kya hain",
+    "answer": "Delivery charges Rs. 200 hain pura Pakistan. Rs. 5000 se zyada order par delivery FREE hai."
+  },
+  {
+    "question": "Free delivery hai",
+    "answer": "Ji haan! Rs. 5000 se zyada ke order par free delivery milti hai."
+  },
+  {
+    "question": "Delivery areas",
+    "answer": "Ji haan, hum pura Pakistan major cities aur aas paas ke areas mein deliver karte hain."
+  },
+  {
+    "question": "Payment methods",
+    "answer": "Aap ye payment methods use kar sakte hain:\n1. Cash on Delivery (COD)\n2. Bank Transfer\n3. JazzCash\n4. EasyPaisa\n5. Credit/Debit Card"
+  },
+  {
+    "question": "Kya main cash par payment kar sakta hun",
+    "answer": "Ji haan! Cash on Delivery (COD) available hai."
+  },
+  {
+    "question": "Return policy kya hai",
+    "answer": "Aap 7 days ke andar product return kar sakte hain agar:\n- Product kharab ho\n- Product different ho jo order kiya\n- Product original packaging mein ho"
+  },
+  {
+    "question": "Contact number",
+    "answer": "Phone: +92-300-1234567\nEmail: support@maliktrading.com\nWhatsApp: +92-300-1234567"
+  },
+  {
+    "question": "mern stack developer application",
+    "answer": "Filhal MERN Stack Developer ki hiring close hai. Lekin aap apna CV support@maliktrading.com pe bhej den. Future opening pe contact kar len ge. JazakAllah"
+  },
+  {
+    "question": "Samsung phones available hain",
+    "answer": "Ji haan! Hamare paas Samsung ke latest models available hain:\n- Samsung Galaxy S24 Ultra\n- Samsung Galaxy S23\n- Samsung Galaxy A54\n- Samsung Galaxy A34\nPrice range: Rs. 50,000 - Rs. 450,000"
+  },
+  {
+    "question": "iPhone available hai",
+    "answer": "Ji haan! iPhone ke ye models available hain:\n- iPhone 15 Pro Max\n- iPhone 15 Pro\n- iPhone 14\n- iPhone 13\nPrice range: Rs. 150,000 - Rs. 600,000"
+  },
+  {
+    "question": "Xiaomi phones hain",
+    "answer": "Ji haan! Xiaomi ke ye models available hain:\n- Redmi Note 13 Pro\n- Redmi Note 12\n- Xiaomi 13T\nPrice range: Rs. 40,000 - Rs. 200,000"
+  },
+  {
+    "question": "Laptops kaunse hain",
+    "answer": "Hamare paas ye laptops hain:\n- HP Pavilion, HP EliteBook\n- Dell Inspiron, Dell XPS\n- Lenovo ThinkPad, Lenovo IdeaPad\nPrice range: Rs. 80,000 - Rs. 400,000"
+  },
+  {
+    "question": "Accessories kya milte hain",
+    "answer": "Hamare paas ye accessories hain:\n- Chargers (Original + Fast Charging)\n- Phone Cases (Silicone, Leather)\n- Headphones (Wired, Bluetooth)\n- Earbuds (TWS)\n- Power Banks\n- USB Cables"
+  },
+  {
+    "question": "Smart watches hain",
+    "answer": "Ji haan! Smart watches available hain:\n- Samsung Galaxy Watch\n- Apple Watch\n- Xiaomi Smart Band\nPrice range: Rs. 5,000 - Rs. 150,000"
+  },
+  {
+    "question": "Order kaise karein",
+    "answer": "Order karne ke liye:\n1. Product select karein\n2. WhatsApp par message karein\n3. Delivery address dein\n4. Payment method choose karein\nHum aapka order confirm kar denge!"
+  },
+  {
+    "question": "Order status kaise check karein",
+    "answer": "Order status check karne ke liye apna Order ID WhatsApp par bhejein. Hum foran update de denge."
+  },
+  {
+    "question": "Order cancel kaise karein",
+    "answer": "Order cancel karne ke liye delivery se pehle WhatsApp par message karein. Delivery ke baad return policy apply hogi."
+  },
+  {
+    "question": "Warranty milti hai",
+    "answer": "Ji haan! Sab products par official warranty milti hai:\n- Phones: 1 year brand warranty\n- Laptops: 1 year international warranty\n- Accessories: 3 months warranty"
+  },
+  {
+    "question": "Original products hain",
+    "answer": "Ji bilkul! Hum 100% original products dete hain. Sab products brand authorized distributors se aate hain."
+  },
+  {
+    "question": "Discount milta hai",
+    "answer": "Ji haan! Hum seasonal discounts dete hain. Abhi ongoing offers:\n- 10% off on Samsung phones\n- Free delivery on Rs. 5000+ orders\n- Bundle deals on accessories"
+  },
+  {
+    "question": "Installment par milta hai",
+    "answer": "Filhal hum installment facility nahi dete. Lekin aap bank se 0% installment plan le sakte hain."
+  },
+  {
+    "question": "Used phones milte hain",
+    "answer": "Ji haan! Hum used phones bhi rakhte hain jo 100% checked hote hain. Price 30-40% kam hoti hai."
+  },
+  {
+    "question": "Exchange offer hai",
+    "answer": "Ji haan! Purana phone exchange kar ke naya phone le sakte hain. Aap apne phone ki detail WhatsApp karein, hum price bata denge."
+  },
+  {
+    "question": "Delivery ka time kya hai",
+    "answer": "Delivery timing:\n- Karachi: Same day delivery\n- Lahore/Islamabad: 1-2 days\n- Other cities: 2-3 days\nDelivery 9 AM se 8 PM tak hoti hai."
+  },
+  {
+    "question": "Delivery charges Karachi mein kitne hain",
+    "answer": "Karachi mein delivery charges Rs. 100 hain. Rs. 3000 se zyada order par Karachi mein FREE delivery hai."
+  },
+  {
+    "question": "Cash on delivery available hai",
+    "answer": "Ji haan! Cash on Delivery (COD) available hai. Aap order receive kar ke payment kar sakte hain."
+  },
+  {
+    "question": "Bank transfer kaise karein",
+    "answer": "Bank transfer ke liye:\nAccount Title: Malik Trading Company\nBank: Meezan Bank\nAccount Number: 1234567890\nIBAN: PK1234567890\nTransfer ke baad screenshot bhejein."
+  },
+  {
+    "question": "JazzCash number",
+    "answer": "JazzCash number: 0300-1234567\nName: Malik Trading Company\nPayment ke baad screenshot bhejein."
+  },
+  {
+    "question": "EasyPaisa number",
+    "answer": "EasyPaisa number: 0300-1234567\nName: Malik Trading Company\nPayment ke baad screenshot bhejein."
+  },
+  {
+    "question": "Return kaise karein",
+    "answer": "Return karne ke liye:\n1. WhatsApp par message karein\n2. Return reason batayein\n3. Product wapas bhejein\n4. Refund 3-5 working days mein mil jayega"
+  },
+  {
+    "question": "Refund kitne din mein milega",
+    "answer": "Refund 3-5 working days mein aapke bank account ya JazzCash/EasyPaisa mein aa jayega."
+  },
+  {
+    "question": "Product kharab nikle to",
+    "answer": "Agar product kharab nikle to foran WhatsApp par video bhejein. Hum replacement ya refund de denge."
+  },
+  {
+    "question": "Bill milta hai",
+    "answer": "Ji haan! Har product ke saath proper bill milta hai jo warranty ke liye zaroori hai."
+  },
+  {
+    "question": "Online order kar sakte hain",
+    "answer": "Ji haan! Aap WhatsApp par order kar sakte hain. Product select karein aur hum delivery kar denge."
+  },
+  {
+    "question": "Shop ka address",
+    "answer": "Shop Address:\nShop #45, Main Market, Karachi\nNear Main Road\nGoogle Maps: Search 'Malik Trading Company'"
+  },
+  {
+    "question": "Timing Sunday ko",
+    "answer": "Sunday ko hum closed hote hain. Monday se Saturday, 9 AM se 6 PM tak khule hain."
+  },
+  {
+    "question": "Emergency contact",
+    "answer": "Emergency ke liye:\n📞 Phone: +92-300-1234567\n📱 WhatsApp: +92-300-1234567\nAvailable: 9 AM - 9 PM"
+  },
+  {
+    "question": "Bulk order discount",
+    "answer": "Bulk order par special discount milta hai:\n- 10+ items: 15% discount\n- 50+ items: 20% discount\n- 100+ items: 25% discount\nContact karein for details."
+  },
+  {
+    "question": "Corporate order",
+    "answer": "Corporate orders ke liye:\nEmail: corporate@maliktrading.com\nPhone: +92-300-1234567\nHum bulk pricing aur invoice provide karte hain."
+  },
+  {
+    "question": "Gift wrapping hai",
+    "answer": "Ji haan! Gift wrapping available hai Rs. 100 extra mein. Aap order ke time bata dein."
+  },
+  {
+    "question": "Price match karte hain",
+    "answer": "Ji haan! Agar aapko kahin aur se better price milti hai, hum price match karte hain. Proof bhejein."
+  },
+  {
+    "question": "Student discount",
+    "answer": "Ji haan! Student ID par 5% extra discount milta hai. Order ke time student ID ki photo bhejein."
+  },
+  {
+    "question": "Technician service",
+    "answer": "Ji haan! Hum repair service bhi dete hain:\n- Phone repair: Rs. 500 se shuru\n- Laptop repair: Rs. 1000 se shuru\nService center par le kar aayein."
+  },
+  {
+    "question": "Software installation",
+    "answer": "Ji haan! Hum software installation karte hain:\n- Windows: Rs. 500\n- MS Office: Rs. 1000\n- Antivirus: Rs. 1500\nFree with new laptop purchase."
+  },
+  {
+    "question": "Data recovery service",
+    "answer": "Ji haan! Data recovery service available hai. Price data size aur condition par depend karta hai."
+  },
+  {
+    "question": "Shop online hai",
+    "answer": "Ji haan! Aap WhatsApp par order kar sakte hain:\n1. Product select karein\n2. Payment karein\n3. Delivery receive karein"
+  },
+  {
+    "question": "Tracking ID milta hai",
+    "answer": "Ji haan! Order confirm hone ke baad aapko tracking ID milti hai jisse aap order track kar sakte hain."
+  },
+  {
+    "question": "Delivery late ho jaye to",
+    "answer": "Agar delivery late ho jaye to foran WhatsApp karein. Hum delivery partner se contact kar ke update denge."
+  },
+  {
+    "question": "Products ki guarantee",
+    "answer": "Sab products 100% original hain aur brand warranty ke saath aate hain:\n- Phones: 1 year warranty\n- Laptops: 1 year warranty\n- Accessories: 3 months warranty"
+  }
+]

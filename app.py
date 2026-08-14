@@ -1,5 +1,3 @@
-
-
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_cors import CORS
 import os
@@ -13,11 +11,11 @@ from datetime import datetime
 
 # Flask app initialize karo
 app = Flask(__name__)
-CORS(app)  # Cross-Origin Resource Sharing enable karo
+CORS(app) # Cross-Origin Resource Sharing enable karo
 
 # Configuration load karo
 app.config['UPLOAD_FOLDER'] = Config.UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16MB max file size
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'your-secret-key-here')
 
 # Ensure folders exist
@@ -48,7 +46,6 @@ def home():
 @app.route('/webhook', methods=['GET', 'POST'])
 @app.route('/webhook/whatsapp', methods=['GET', 'POST'])
 @app.route('/webhook/ultramsg', methods=['GET', 'POST'])
-@app.route('/webhook/whatsapp', methods=['POST'])
 def whatsapp_webhook():
     """WhatsApp se messages receive karne ke liye webhook (UltraMsg)"""
     try:
@@ -111,7 +108,7 @@ def upload_document():
     try:
         # Password check karo
         password = request.form.get('password', '')
-        if password != Config.ADMIN_PASSWORD:
+        if password!= Config.ADMIN_PASSWORD:
             return jsonify({'error': 'Galat password!'}), 401
         
         # File check karo
@@ -163,7 +160,7 @@ def view_chats():
     try:
         # Simple authentication
         password = request.args.get('password', '')
-        if password != Config.ADMIN_PASSWORD:
+        if password!= Config.ADMIN_PASSWORD:
             return jsonify({'error': 'Galat password!'}), 401
         
         # Chat history get karo
@@ -184,7 +181,7 @@ def view_stats():
     try:
         # Simple authentication
         password = request.args.get('password', '')
-        if password != Config.ADMIN_PASSWORD:
+        if password!= Config.ADMIN_PASSWORD:
             return jsonify({'error': 'Galat password!'}), 401
         
         # Statistics get karo
@@ -208,7 +205,7 @@ def test_bot():
     try:
         # Password check karo
         password = request.form.get('password') or request.json.get('password')
-        if password != Config.ADMIN_PASSWORD:
+        if password!= Config.ADMIN_PASSWORD:
             return jsonify({'error': 'Galat password!'}), 401
         
         # Test message lo
@@ -250,7 +247,7 @@ def not_found(error):
 def internal_error(error):
     return jsonify({'error': 'Internal server error!'}), 500
 
-# Flask app run karo
+# Flask app run karo - UPDATED FOR RENDER
 if __name__ == '__main__':
     print("=" * 50)
     print("🤖 WhatsApp Support Bot Starting...")
@@ -260,9 +257,10 @@ if __name__ == '__main__':
     print(f"📁 Upload Folder: {Config.UPLOAD_FOLDER}")
     print("=" * 50)
     
-    # Development server
+    # Production server - Render ke liye updated
+    port = int(os.environ.get('PORT', 5000))
     app.run(
-        host='127.0.0.1',  # Listen on all interfaces
-        port=5000,
-        debug=True  # Development mein debug mode on rakho
+        host='0.0.0.0', # ← 127.0.0.1 se 0.0.0.0 kar diya
+        port=port, # ← Render ka PORT env use karo
+        debug=False # ← Production me False karo
     )
