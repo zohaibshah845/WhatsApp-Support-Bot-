@@ -20,7 +20,7 @@ class WhatsAppHandler:
         # WATI credentials
         self.token = token or os.getenv('WATI_API_TOKEN')
         self.api_base = "https://live-mt-server.wati.io"
-        self.tenant_id = os.getenv('WATI_TENANT_ID', '10231096')  # Aapka WATI ID
+        self.tenant_id = os.getenv('WATI_TENANT_ID', '10231096')
         
         # Connection status
         if self.token:
@@ -56,12 +56,12 @@ class WhatsAppHandler:
             # WATI API endpoint
             url = f"{self.api_base}/{self.tenant_id}/api/v1/sendSessionMessage/{formatted_number}"
             
-            # Request payload - WATI format
+            # Request payload
             payload = {
                 'messageText': message
             }
             
-            # Headers - WATI Bearer token
+            # Headers
             headers = {
                 'Authorization': f'Bearer {self.token}',
                 'Content-Type': 'application/json'
@@ -129,15 +129,76 @@ class WhatsAppHandler:
         # Sab non-digit characters remove karo
         digits = re.sub(r'\D', '', phone_number)
         
-        # Agar number 0 se start ho to 92 lagao (Pakistan)
+        # Agar number 0 se start ho to 92 lagao
         if digits.startswith('0'):
             digits = '92' + digits[1:]
         # Agar number 10 digits ka ho to 92 lagao
         elif len(digits) == 10 and digits.startswith('3'):
             digits = '92' + digits
         
-        return digits  # WATI ko + nahi chahiye
+        return digits
     
     def format_phone_number(self, phone_number: str) -> str:
         """
         General format: +923001234567
+        """
+        digits = re.sub(r'\D', '', phone_number)
+        
+        if digits.startswith('0'):
+            digits = '92' + digits[1:]
+        elif len(digits) == 10 and digits.startswith('3'):
+            digits = '92' + digits
+        
+        return '+' + digits
+    
+    def format_message(self, text: str) -> str:
+        """WhatsApp formatting"""
+        text = text.replace('*', '')
+        text = text.replace('_', '')
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+    
+    def _log_message(self, phone_number: str, message: str, direction: str) -> None:
+        """Message log karo"""
+        log_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'phone': phone_number,
+            'direction': direction,
+            'message': message[:200]
+        }
+        
+        try:
+            try:
+                with open(self.log_file, 'r') as f:
+                    logs = json.load(f)
+            except:
+                logs = []
+            
+            logs.append(log_entry)
+            
+            if len(logs) > 1000:
+                logs = logs[-1000:]
+            
+            with open(self.log_file, 'w') as f:
+                json.dump(logs, f, indent=2)
+                
+        except Exception as e:
+            print(f"❌ Logging error: {e}")
+
+# Test function
+if _name_ == "_main_":
+    print("🧪 WATI WhatsApp Handler Test")
+    print("=" * 40)
+    
+    handler = WhatsAppHandler()
+    
+    test_numbers = [
+        '03001234567',
+        '+923001234567',
+        '923001234567',
+    ]
+    
+    print("\n📱 Phone Number Format Test for WATI:")
+    for num in test_numbers:
+        formatted = handler.format_phone_number_for_wati(num)
+        print(f"  {num:20s} -> {formatted}")
