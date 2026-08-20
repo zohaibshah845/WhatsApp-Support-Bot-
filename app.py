@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 # Flask app initialize karo
-app = Flask(_name_)
+app = Flask(__name__)
 CORS(app) # Cross-Origin Resource Sharing enable karo
 
 # Configuration load karo
