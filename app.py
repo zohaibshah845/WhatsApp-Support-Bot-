@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 # Flask app initialize karo
-app = Flask(__name__) # ✅ Double underscore __name_
+app = Flask(_name_)
 CORS(app)
 
 # Configuration load karo
@@ -53,13 +53,18 @@ def wati_webhook():
         print("WATI DATA RECEIVED:", message_data)
         print("=" * 50)
 
-        # WATI ka data nikalo
-        data = message_data.get('data', {})
-        from_number = data.get('waId', '') # WATI me 'waId' hota hai
-        message_body = data.get('text', '').strip() # WATI me 'text' hota hai
+        # WATI ka data direct aata hai
+        from_number = message_data.get('waId', '')
+        message_body = message_data.get('text', '').strip()
+        msg_type = message_data.get('type', '')
+
+        # Sirf text messages handle karo
+        if msg_type!= 'text' or not message_body or not from_number:
+            print(f"⚠️ Skipping: type={msg_type}, body={message_body}")
+            return jsonify({'success': True}), 200
 
         # Groups ignore karo
-        if '@g.us' in from_number or not message_body or not from_number:
+        if '@g.us' in from_number:
             return jsonify({'success': True}), 200
 
         # Sirf number nikalo
@@ -67,7 +72,7 @@ def wati_webhook():
 
         print(f"📨 WATI Message from {phone_number}: {message_body}")
 
-        # Bot ka jawab banao - rag_engine greeting khud handle kar lega
+        # Bot ka jawab banao
         bot_response = rag_engine.query(message_body)
 
         # DB me save karo
@@ -127,6 +132,6 @@ def ultramsg_webhook():
         print(f"❌ CRASH: {e}")
         return jsonify({'success': False}), 500
 
-if __name__== '__main__':
+if _name_ == '_main_':
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=False)
