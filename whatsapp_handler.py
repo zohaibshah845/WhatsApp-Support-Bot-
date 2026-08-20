@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Tuple
 class WhatsAppHandler:
     """WhatsApp messages handle karne ke liye - WATI API ke saath"""
     
-    def _init_(self, instance_id=None, token=None):
+    def __init__(self, instance_id=None, token=None):
         """
         WATI WhatsApp handler initialize karo
         
@@ -126,22 +126,17 @@ class WhatsAppHandler:
         """
         WATI ko phone number without + chahiye: 923001234567
         """
-        # Sab non-digit characters remove karo
         digits = re.sub(r'\D', '', phone_number)
         
-        # Agar number 0 se start ho to 92 lagao
         if digits.startswith('0'):
             digits = '92' + digits[1:]
-        # Agar number 10 digits ka ho to 92 lagao
         elif len(digits) == 10 and digits.startswith('3'):
             digits = '92' + digits
         
         return digits
     
     def format_phone_number(self, phone_number: str) -> str:
-        """
-        General format: +923001234567
-        """
+        """General format: +923001234567"""
         digits = re.sub(r'\D', '', phone_number)
         
         if digits.startswith('0'):
@@ -184,6 +179,10 @@ class WhatsAppHandler:
                 
         except Exception as e:
             print(f"❌ Logging error: {e}")
+
+    def get_connection_status(self):
+        """Health check ke liye"""
+        return {"connected": self.is_connected, "provider": "WATI"}
 
 # Test function
 if __name__ == "__main__":
