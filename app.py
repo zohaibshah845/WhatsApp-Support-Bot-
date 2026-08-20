@@ -50,7 +50,7 @@ def wati_webhook():
         message_data = request.get_json()
 
         print("=" * 50)
-        print("WATI DATA RECEIVED:", message_data)
+        print("📨 WATI Message from", data.get('waId'), ":", data.get('text', {}).get('body'))
         print("=" * 50)
 
         # WATI ka data direct aata hai
