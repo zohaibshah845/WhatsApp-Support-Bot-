@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 # Flask app initialize karo
-app = Flask(_name_)
+app = Flask(__name__)
 CORS(app)
 
 # Configuration load karo
@@ -132,6 +132,6 @@ def ultramsg_webhook():
         print(f"❌ CRASH: {e}")
         return jsonify({'success': False}), 500
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=False)
