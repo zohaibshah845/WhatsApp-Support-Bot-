@@ -45,6 +45,54 @@ def home():
 
 @app.route('/webhook', methods=['GET', 'POST'])
 @app.route('/webhook/whatsapp', methods=['GET', 'POST'])
+@app.route('/webhook', methods=['GET', 'POST'])
+@app.route('/webhook/whatsapp', methods=['GET', 'POST'])
 @app.route('/webhook/ultramsg', methods=['GET', 'POST'])
 def whatsapp_webhook():
-    """WhatsApp se messages receive karne ke l
+    """WhatsApp se messages receive karne ke liye webhook (UltraMsg)"""
+    try:
+        # UltraMsg webhook data
+        message_data = request.get_json()
+        
+        print("=" * 50)
+        print("ULTRAMSG DATA:", message_data)
+        print("=" * 50)
+        
+        # UltraMsg ka nested data nikalo
+        data = message_data.get('data', {})
+        from_number = data.get('from', '')
+        message_body = data.get('body', '')
+        
+        # Groups/Newsletter ignore karo
+        if '@g.us' in from_number or '@newsletter' in from_number or '@broadcast' in from_number:
+            return jsonify({'success': True}), 200
+        
+        # Khali message check
+        if not message_body or not from_number:
+            print(f"❌ EMPTY: from={from_number}, body={message_body}")
+            return jsonify({'success': False}), 400
+        
+        # Sirf number nikalo
+        phone_number = from_number.split('@')[0]
+        
+        print(f"📨 Message from {phone_number}: {message_body}")
+        
+        # Bot ka jawab banao
+        bot_response = rag_engine.query(message_body)
+        
+        # DB me save karo
+        db.save_chat(phone_number, message_body, bot_response)
+        
+        # Reply bhejo
+        success, msg_id = whatsapp_handler.send_message(phone_number, bot_response)
+        
+        if success:
+            print(f"✅ Reply sent: {msg_id}")
+        else:
+            print(f"❌ Send failed: {msg_id}")
+        
+        return jsonify({'success': True}), 200
+        
+    except Exception as e:
+        print(f"❌ CRASH: {e}")
+        return jsonify({'success': False}), 500
