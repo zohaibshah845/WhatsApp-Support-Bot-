@@ -12,7 +12,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-# FIX 1: Increase upload size to 16MB
+# Increase upload size to 16MB
 app.config['UPLOAD_FOLDER'] = Config.UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'your-secret-key-here')
@@ -23,10 +23,8 @@ os.makedirs(Config.CHROMA_DB_PATH, exist_ok=True)
 db = Database(Config.SQLITE_DB_PATH)
 rag_engine = RAGEngine(Config.OPENAI_API_KEY, Config.CHROMA_DB_PATH)
 
-whatsapp_handler = WhatsAppHandler(
-    instance_id=os.getenv('ULTRAMSG_INSTANCE_ID'),
-    token=os.getenv('ULTRAMSG_TOKEN')
-)
+# ✅ FIXED: Only WATI - no UltraMsg
+whatsapp_handler = WhatsAppHandler()
 
 @app.route('/')
 def home():
@@ -34,7 +32,7 @@ def home():
         'status': 'success',
         'message': 'AI WhatsApp Customer Support Bot is running! 🚀',
         'bot_name': Config.BOT_NAME,
-        'whatsapp_provider': 'WATI + UltraMsg',
+        'whatsapp_provider': 'WATI',
         'timestamp': datetime.now().isoformat()
     })
 
@@ -42,34 +40,58 @@ def home():
 def wati_webhook():
     try:
         message_data = request.get_json()
+        
+        # Debug print
+        print("=" * 60)
+        print("📥 FULL WATI WEBHOOK DATA:")
+        print(json.dumps(message_data, indent=2))
+        print("=" * 60)
 
-        from_number = message_data.get('waId', '')
-        msg_type = message_data.get('type', '')
-
-        # FIX 2: Handle both dict and string text
-        text_data = message_data.get('text', {})
+        # WATI sends different formats - handle all
+        from_number = message_data.get('waId', '') or message_data.get('from', '')
+        msg_type = message_data.get('type', 'text')
+        
+        # Handle text in different formats
+        text_data = message_data.get('text', '')
         if isinstance(text_data, dict):
             message_body = text_data.get('body', '')
+        elif isinstance(text_data, str):
+            message_body = text_data
         else:
-            message_body = str(text_data)
+            message_body = ''
+        
+        # Some WATI versions send 'message' instead of 'text'
+        if not message_body:
+            message_body = message_data.get('message', '')
+        
         message_body = message_body.strip()
 
-        # Small print - no 413
-        print("=" * 50)
-        print(f"📨 WATI Message from {from_number} : {message_body}")
-        print("=" * 50)
+        print(f"📨 From: {from_number}")
+        print(f"📝 Message: {message_body}")
+        print(f"📋 Type: {msg_type}")
 
-        if msg_type!= 'text' or not message_body or not from_number:
-            print(f"⚠️ Skipping: type={msg_type}")
+        # Skip if not text or empty
+        if not message_body or not from_number:
+            print(f"⚠️ Skipping: type={msg_type}, body={message_body}")
             return jsonify({'success': True}), 200
 
-        if '@g.us' in from_number:
+        # Skip group messages
+        if '@g.us' in from_number or '@newsletter' in from_number or '@broadcast' in from_number:
+            print("⚠️ Group message - skipping")
             return jsonify({'success': True}), 200
 
-        phone_number = from_number.split('@')[0]
+        # Clean phone number
+        phone_number = from_number.replace('@c.us', '').replace('+', '')
+        print(f"📱 Phone: {phone_number}")
 
+        # Get bot response
         bot_response = rag_engine.query(message_body)
+        print(f"🤖 Bot Response: {bot_response[:100]}...")
+
+        # Save to database
         db.save_chat(phone_number, message_body, bot_response)
+
+        # Send via WATI
         success, msg_id = whatsapp_handler.send_message(phone_number, bot_response)
 
         if success:
@@ -83,42 +105,23 @@ def wati_webhook():
         print(f"❌ WATI CRASH: {e}")
         return jsonify({'success': False}), 500
 
+# Keep this for backward compatibility
 @app.route('/webhook/ultramsg', methods=['GET', 'POST'])
 def ultramsg_webhook():
-    try:
-        message_data = request.get_json()
-        print("=" * 50)
-        print("ULTRAMSG DATA:", message_data)
-        print("=" * 50)
+    return jsonify({
+        'success': False, 
+        'message': 'UltraMsg is not configured. Using WATI only.'
+    }), 200
 
-        data = message_data.get('data', {})
-        from_number = data.get('from', '')
-        message_body = data.get('body', '')
-
-        if '@g.us' in from_number or '@newsletter' in from_number or '@broadcast' in from_number:
-            return jsonify({'success': True}), 200
-
-        if not message_body or not from_number:
-            print(f"❌ EMPTY: from={from_number}, body={message_body}")
-            return jsonify({'success': False}), 400
-
-        phone_number = from_number.split('@')[0]
-        print(f"📨 UltraMsg Message from {phone_number}: {message_body}")
-
-        bot_response = rag_engine.query(message_body)
-        db.save_chat(phone_number, message_body, bot_response)
-        success, msg_id = whatsapp_handler.send_message(phone_number, bot_response)
-
-        if success:
-            print(f"✅ Reply sent: {msg_id}")
-        else:
-            print(f"❌ Send failed: {msg_id}")
-
-        return jsonify({'success': True}), 200
-
-    except Exception as e:
-        print(f"❌ CRASH: {e}")
-        return jsonify({'success': False}), 500
+# Health check endpoint
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({
+        'status': 'healthy',
+        'wati_token': 'configured' if os.getenv('WATI_API_TOKEN') else 'missing',
+        'openai_token': 'configured' if os.getenv('OPENAI_API_KEY') else 'missing',
+        'timestamp': datetime.now().isoformat()
+    })
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
