@@ -9,24 +9,20 @@ from werkzeug.utils import secure_filename
 import json
 from datetime import datetime
 
-# Flask app initialize karo
 app = Flask(__name__)
 CORS(app)
 
-# Configuration load karo
+# FIX 1: Increase upload size to 16MB
 app.config['UPLOAD_FOLDER'] = Config.UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'your-secret-key-here')
 
-# Ensure folders exist
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(Config.CHROMA_DB_PATH, exist_ok=True)
 
-# Objects initialize karo
 db = Database(Config.SQLITE_DB_PATH)
 rag_engine = RAGEngine(Config.OPENAI_API_KEY, Config.CHROMA_DB_PATH)
 
-# WhatsApp handler initialize karo
 whatsapp_handler = WhatsAppHandler(
     instance_id=os.getenv('ULTRAMSG_INSTANCE_ID'),
     token=os.getenv('ULTRAMSG_TOKEN')
@@ -34,7 +30,6 @@ whatsapp_handler = WhatsAppHandler(
 
 @app.route('/')
 def home():
-    """Home page"""
     return jsonify({
         'status': 'success',
         'message': 'AI WhatsApp Customer Support Bot is running! 🚀',
@@ -45,40 +40,30 @@ def home():
 
 @app.route('/wati-webhook', methods=['POST'])
 def wati_webhook():
-    """WATI se messages receive karne ke liye webhook"""
     try:
         message_data = request.get_json()
 
-        print("=" * 50)
-        print("📨 WATI Message from", data.get('waId'), ":", data.get('text', {}).get('body'))
-        print("=" * 50)
-
-        # WATI ka data direct aata hai
+        # FIX 2: Use message_data instead of data
         from_number = message_data.get('waId', '')
-        message_body = message_data.get('text', '').strip()
+        message_body = message_data.get('text', {}).get('body', '').strip() # FIX 3
         msg_type = message_data.get('type', '')
 
-        # Sirf text messages handle karo
+        # Small print - no 413
+        print("=" * 50)
+        print(f"📨 WATI Message from {from_number} : {message_body}")
+        print("=" * 50)
+
         if msg_type!= 'text' or not message_body or not from_number:
-            print(f"⚠️ Skipping: type={msg_type}, body={message_body}")
+            print(f"⚠️ Skipping: type={msg_type}")
             return jsonify({'success': True}), 200
 
-        # Groups ignore karo
         if '@g.us' in from_number:
             return jsonify({'success': True}), 200
 
-        # Sirf number nikalo
         phone_number = from_number.split('@')[0]
 
-        print(f"📨 WATI Message from {phone_number}: {message_body}")
-
-        # Bot ka jawab banao
         bot_response = rag_engine.query(message_body)
-
-        # DB me save karo
         db.save_chat(phone_number, message_body, bot_response)
-
-        # Reply bhejo
         success, msg_id = whatsapp_handler.send_message(phone_number, bot_response)
 
         if success:
@@ -94,10 +79,8 @@ def wati_webhook():
 
 @app.route('/webhook/ultramsg', methods=['GET', 'POST'])
 def ultramsg_webhook():
-    """UltraMsg ke liye - backup"""
     try:
         message_data = request.get_json()
-
         print("=" * 50)
         print("ULTRAMSG DATA:", message_data)
         print("=" * 50)
@@ -114,7 +97,6 @@ def ultramsg_webhook():
             return jsonify({'success': False}), 400
 
         phone_number = from_number.split('@')[0]
-
         print(f"📨 UltraMsg Message from {phone_number}: {message_body}")
 
         bot_response = rag_engine.query(message_body)
