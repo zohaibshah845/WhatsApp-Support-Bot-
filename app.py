@@ -43,10 +43,16 @@ def wati_webhook():
     try:
         message_data = request.get_json()
 
-        # FIX 2: Use message_data instead of data
         from_number = message_data.get('waId', '')
-        message_body = message_data.get('text', {}).get('body', '').strip() # FIX 3
         msg_type = message_data.get('type', '')
+
+        # FIX 2: Handle both dict and string text
+        text_data = message_data.get('text', {})
+        if isinstance(text_data, dict):
+            message_body = text_data.get('body', '')
+        else:
+            message_body = str(text_data)
+        message_body = message_body.strip()
 
         # Small print - no 413
         print("=" * 50)
